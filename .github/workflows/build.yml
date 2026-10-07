@@ -1,0 +1,23 @@
+name: Build IPA
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - run: |
+          xcodebuild -project DeltLab.xcodeproj -scheme DeltLab -configuration Release \
+            -sdk iphoneos -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+      - run: |
+          mkdir Payload
+          cp -r build/Build/Products/Release-iphoneos/DeltLab.app Payload/
+          zip -r DeltLab.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DeltLab-ipa
+          path: DeltLab.ipa
