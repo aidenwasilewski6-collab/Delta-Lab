@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Delt Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8EDF2;--card:#fff;--ink:#0F1B2D;--mut:#5B6879;--line:#D3DBE4;--acc:#1F5EFF;--g:#1E9E5A;--y:#D9A400;--r:#D6403A;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1420;--card:#16202F;--ink:#EAF0F7;--mut:#93A1B3;--line:#26344A;--acc:#5C8BFF}}
+:root[data-theme="dark"]{--bg:#0D1420;--card:#16202F;--ink:#EAF0F7;--mut:#93A1B3;--line:#26344A;--acc:#5C8BFF}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:500 16px/1.4 Barlow,-apple-system,"Helvetica Neue",sans-serif;padding-bottom:84px}
+h1,h2,.big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;margin:0;letter-spacing:.2px}
+main{max-width:520px;margin:0 auto;padding:18px 16px}
+h1{font-size:34px}h2{font-size:24px;margin:20px 0 8px}
+.sub{color:var(--mut);margin:2px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;color:var(--mut);font:600 15px Barlow,sans-serif;padding:14px 0}
+nav button.on{color:var(--acc);box-shadow:inset 0 3px 0 var(--acc)}
+input[type=range]{width:100%;accent-color:var(--zc,var(--acc));height:32px}
+.zone{display:flex;align-items:baseline;gap:10px}
+.big{font-size:64px;line-height:1;color:var(--zc)}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--zc);color:#fff;font-weight:600;font-size:14px}
+.ex{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);width:100%;text-align:left;background:none;border-left:0;border-right:0;border-bottom:0;color:inherit;font:inherit}
+.ex:first-child{border-top:0}
+.box{flex:0 0 24px;height:24px;border:2px solid var(--mut);border-radius:7px;margin-top:2px;display:grid;place-items:center;color:#fff;font-size:15px}
+.ex.done .box{background:var(--g);border-color:var(--g)}.ex.done .n{text-decoration:line-through;color:var(--mut)}
+.n{font-weight:600}.d{color:var(--mut);font-size:14px}.sr{margin-left:auto;font-weight:600;white-space:nowrap}
+.day{display:flex;justify-content:space-between;width:100%;padding:14px;border:1px solid var(--line);background:var(--card);color:inherit;font:inherit;border-radius:14px;margin:8px 0;text-align:left}
+.day.today{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btns button,.sm{flex:1;min-width:90px;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 16px Barlow,sans-serif}
+.btns .p{background:var(--acc);border-color:var(--acc);color:#fff}
+.bar{height:22px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.lg{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 0 12px 36px}.lg input{width:64px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 16px Barlow,sans-serif}.lg .sv{padding:8px 12px;border-radius:8px;border:0;background:var(--acc);color:#fff;font:600 15px Barlow,sans-serif}.lg .note{flex:1 0 100%}.exw{border-top:1px solid var(--line)}.exw:first-child{border-top:0}.exw .ex{border-top:0;padding-bottom:6px}.exw.done .box{background:var(--g);border-color:var(--g)}.exw.done .n{text-decoration:line-through;color:var(--mut)}.note{font-size:14px;color:var(--mut)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+</style></head><body><main id="app"></main>
+<nav><button data-t="today">Today</button><button data-t="week">Week</button><button data-t="water">Water</button></nav>
+<script>
+const W={
+Mon:{t:"Shoulders: strength",ex:[["Seated dumbbell overhead press",4,"6-8","Heaviest lift of the week. Stop 1-2 reps short of failure."],["Cable lateral raise",4,"10-15","Arm slightly in front of body, lead with the elbow."],["Reverse pec-deck fly",3,"12-15","Rear delts. Slow lowering."],["Face pull",3,"12-15","Pull to forehead, squeeze 1 sec."],["Cable crunch",3,"10-15","Round the spine, add weight over time."]]},
+Tue:{t:"Back and abs",ex:[["Pull-up or lat pulldown",4,"6-10","Full stretch at the bottom."],["Chest-supported row",3,"8-12","Keeps the lower back out of it."],["Hanging leg raise",4,"8-15","Curl the pelvis up, no swinging."],["Ab wheel rollout",3,"8-12","Ribs down, glutes tight."],["Dumbbell shrug",2,"12-15","Traps help frame the shoulders."]]},
+Wed:{t:"Legs",ex:[["Goblet or barbell squat",4,"6-10","Controlled down, drive up."],["Bulgarian split squat",3,"8-12","Per leg."],["Seated leg curl",3,"10-15","Hamstrings without deadlifts."],["Leg press",3,"10-15","Full range."],["Standing calf raise",4,"10-15","Pause at the stretch."]]},
+Thu:{t:"Shoulders: volume",ex:[["Landmine press",4,"8-10","Easy on the joints, great for delts."],["Dumbbell lateral raise",5,"12-20","Last set: drop weight and keep going."],["Rear delt cable fly",4,"12-20","Light weight, strict form."],["Cable Y-raise",3,"12-15","Lower traps and delts."],["Hanging knee raise",3,"12-20","Slow and controlled."]]},
+Fri:{t:"Pull and abs",ex:[["Neutral-grip pull-up or pulldown",4,"6-10","Think elbows to hips."],["One-arm dumbbell row",3,"8-12","Per arm."],["Cable crunch",4,"10-15","Heavier than Monday."],["Plank with reach",3,"30-45 sec","Squeeze glutes."],["Dumbbell curl",3,"10-12","Quick arm pump."]]},
+Sat:{t:"Delts, legs, abs",ex:[["Machine or dumbbell shoulder press",3,"8-12","Moderate weight."],["Lateral raise",4,"15-20","Pump work."],["Front squat or leg press",3,"8-12","Keep it smooth."],["Reverse crunch",3,"12-20","Lift hips, don't swing."],["Side plank",2,"30 sec","Each side."]]},
+Sun:{t:"Rest and mobility",ex:[["Easy 20-30 min walk",1,"","Helps recovery."],["Shoulder CARs and band pull-aparts",2,"10","Loosen up."],["Stretch hips and chest",1,"5 min","Breathe slowly."]]}};
+const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const RED=[["20-30 min easy walk",1,"","Keep heart rate low."],["Band pull-aparts",2,"15","Light shoulder blood flow."],["Dead bug",2,"8 per side","Core without fatigue."],["Shoulder and hip mobility",1,"8 min","Slow breathing."]];
+const ROUT={m:"5 min shoulder mobility (arm circles, band dislocates, wall slides)",e:"5 min core (plank 30 sec, dead bug x10, side plank 20 sec each)",n:"Aim for 8+ hours of sleep. Stay consistent with bed time."};
+const $=s=>document.querySelector(s);
+const key=d=>d.toISOString().slice(0,10);
+const store={get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let tab="today",view=null;
+const zone=r=>r>=67?["green","Green","var(--g)"]:r>=34?["yellow","Yellow","var(--y)"]:["red","Red","var(--r)"];
+function plan(day,rec){const w=W[day];if(rec==null||rec>=67)return{t:w.t,ex:w.ex,msg:"Full plan. Push each set to 1-2 reps from failure."};
+if(rec>=34)return{t:w.t,ex:w.ex.map(e=>[e[0],Math.max(1,e[1]-1),e[2],e[3]]),msg:"One fewer set per exercise. Stop 2-3 reps short of failure."};
+return{t:"Recovery day",ex:RED,msg:"Low recovery. Skip heavy lifting today, your body adapts when it rests."}}
+function repsRange(e){const m=/^(\d+)-(\d+)$/.exec(e[2]);return m?+m[2]:0}
+const rnd=x=>Math.round(x/2.5)*2.5;
+function sugg(e,rec){const top=repsRange(e),lg=store.get("lw:"+e[0],null);
+if(!lg)return "First time: pick a weight you can lift for "+e[2]+" reps with 2 left in the tank.";
+let w=lg.w,msg="Last: "+lg.w+" lb x "+lg.r+". ";
+if(rec!=null&&rec<67){w=rnd(lg.w*0.9);return msg+"Recovery is yellow, try "+w+" lb today."}
+if(lg.r>=top){w=lg.w+(lg.w<40?2.5:5);return msg+"You hit "+top+" reps, go up to "+w+" lb."}
+return msg+"Same weight, aim for "+(lg.r+1)+"+ reps."}
+function recFor(d){return store.get("rec:"+key(d),null)}
+function head(t,s){return `<h1>${t}</h1><p class="sub">${s}</p>`}
+function today(){const d=new Date(),day=DAYS[d.getDay()],rec=recFor(d),z=rec==null?["","Not set","var(--acc)"]:zone(rec),p=plan(day,rec),done=store.get("done:"+key(d),[]);
+return head("Today",d.toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"}))+
+`<div class="card" style="--zc:${z[2]}"><div class="zone"><span class="big">${rec==null?"--":rec+"%"}</span><span class="pill">${z[1]}</span></div>
+<p class="note" style="margin:6px 0 0">Enter your WHOOP recovery from the app.</p>
+<input type="range" min="0" max="100" value="${rec==null?50:rec}" aria-label="WHOOP recovery percent" id="rec"></div>
+<h2>${p.t}</h2><p class="sub">${p.msg}</p>
+<div class="card">${p.ex.map((e,i)=>{const can=rec==null||rec>=34,lw=can&&repsRange(e)>0&&day!="Sun",dn=done.includes(i);return `<div class="exw ${dn?"done":""}"><button class="ex" data-i="${i}"><span class="box">${dn?"✓":""}</span><span><span class="n">${e[0]}</span><br><span class="d">${e[3]}</span></span><span class="sr">${e[1]}${e[2]?" x "+e[2]:""}</span></button>${lw?`<div class="lg"><span class="note">${sugg(e,rec)}</span><input inputmode="decimal" placeholder="lb" aria-label="Weight in pounds" data-lw="${i}"><input inputmode="numeric" placeholder="reps" aria-label="Reps" data-lr="${i}"><button class="sv" data-lg="${i}">Log</button></div>`:""}</div>`}).join("")}</div>
+<h2>Daily routine</h2><div class="card"><p><b>Morning:</b> ${ROUT.m}</p><p><b>Evening:</b> ${ROUT.e}</p><p style="margin:0"><b>Sleep:</b> ${ROUT.n}</p></div>`}
+function week(){const t=new Date().getDay();return head("This week","Tap a day to see the plan. Green recovery = full plan.")+["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(n=>{const i=DAYS.indexOf(n),off=(i-t+7)%7,d=new Date();d.setDate(d.getDate()+off);const r=recFor(d);
+return `<button class="day ${i==t?"today":""}" data-d="${n}"><span><b>${n}</b> ${W[n].t}</span><span class="note">${r==null?"":zone(r)[1]}</span></button>`}).join("")}
+function dayView(n){const t=new Date().getDay(),i=DAYS.indexOf(n),d=new Date();d.setDate(d.getDate()+(i-t+7)%7);const rec=recFor(d),p=plan(n,rec);
+return `<button class="sm" id="back" style="width:auto;flex:none;padding:8px 14px">Back</button>`+head(n+": "+p.t,p.msg)+`<div class="card">${p.ex.map(e=>`<div class="ex"><span><span class="n">${e[0]}</span><br><span class="d">${e[3]}</span></span><span class="sr">${e[1]}${e[2]?" x "+e[2]:""}</span></div>`).join("")}</div>`}
+function goalMl(){const c=store.get("creatine",true),d=new Date(),train=DAYS[d.getDay()]!="Sun";return 2500+(c?500:0)+(train?500:0)}
+function water(){const d=key(new Date()),ml=store.get("w:"+d,0),g=goalMl(),c=store.get("creatine",true),pct=Math.min(100,ml/g*100);
+return head("Water",Math.round(ml/29.57)+" oz so far today")+`<div class="card"><div class="zone"><span class="big" style="--zc:var(--acc)">${ml}</span><span class="note">of ${g} ml (${Math.round(g/29.57)} oz)</span></div><div class="bar"><i style="width:${pct}%"></i></div>
+<div class="btns"><button class="p" data-w="250">+250 ml</button><button class="p" data-w="500">+500 ml</button><button data-w="-250">Undo 250</button></div></div>
+<div class="card"><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="cr" ${c?"checked":""} style="width:22px;height:22px"> I take 5 g creatine daily</label>
+<p class="note" style="margin:10px 0 0">Goal = 2500 ml base for 155 lb${c?" + 500 ml for creatine":""}${DAYS[new Date().getDay()]!="Sun"?" + 500 ml for a training day":""}. Take your creatine with a full glass of water.</p></div>`}
+function render(){document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t==tab));
+$("#app").innerHTML=tab=="today"?today():tab=="week"?(view?dayView(view):week()):water();bind()}
+function bind(){const A=$("#app");
+const r=$("#rec");if(r){r.oninput=()=>{const v=+r.value,z=zone(v);r.closest(".card").style.setProperty("--zc",z[2]);r.closest(".card").querySelector(".big").textContent=v+"%";r.closest(".card").querySelector(".pill").textContent=z[1]};r.onchange=()=>{store.set("rec:"+key(new Date()),+r.value);store.set("done:"+key(new Date()),[]);render()}}
+A.querySelectorAll(".ex[data-i]").forEach(b=>b.onclick=()=>{const k="done:"+key(new Date()),a=store.get(k,[]),i=+b.dataset.i;store.set(k,a.includes(i)?a.filter(x=>x!=i):[...a,i]);render()});
+A.querySelectorAll("[data-lg]").forEach(b=>b.onclick=()=>{const i=+b.dataset.lg,w=parseFloat(A.querySelector('[data-lw="'+i+'"]').value),r=parseInt(A.querySelector('[data-lr="'+i+'"]').value);if(isNaN(w)||isNaN(r))return;const d=new Date(),day=DAYS[d.getDay()],rec=recFor(d),e=plan(day,rec).ex[i];store.set("lw:"+e[0],{w,r});const k="done:"+key(d),a=store.get(k,[]);if(!a.includes(i))store.set(k,[...a,i]);render()});
+A.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{view=b.dataset.d;render()});
+const bk=$("#back");if(bk)bk.onclick=()=>{view=null;render()};
+A.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{const k="w:"+key(new Date());store.set(k,Math.max(0,store.get(k,0)+ +b.dataset.w));render()});
+const c=$("#cr");if(c)c.onchange=()=>{store.set("creatine",c.checked);render()}}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;view=null;render()});
+render();
+</script></body></html>
